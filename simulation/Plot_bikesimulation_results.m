@@ -22,18 +22,45 @@ title('Trajectory');
 
 subplot(3,2,2)
 plot(Results.error1.Time,Results.error1.Data)
+min_lateral_error = 0.5;
+yline(min_lateral_error)
+yline(-min_lateral_error)
 xlabel('Time [s]')
 ylabel('Distance [m]')
 title('Lateral error')
 
+
+%--------------------
+for i = 1:length(Results.error1.Data)
+    if abs(Results.error1.Data(i)) > min_lateral_error
+        lowest_speed_lateral = Results.bike_states.Data(i, 7)
+        break
+    end
+end
+%-------------------
+
 subplot(3,2,4)
 hold on
 plot(Results.error2.Time,rad2deg(Results.error2.Data))
+min_heading_error = 20;
+yline(min_heading_error)
+yline(-min_heading_error)
 % plot(Results.dpsiref_steer.Time,rad2deg(Results.dpsiref_steer.Data))
 xlabel('Time [s]')
 ylabel('Angle [deg]')
 grid on
 title('Heading error')
+
+%--------------------
+for i = 1:length(Results.error2.Data)
+    if abs(Results.error2.Data(i)) > deg2rad(min_heading_error)
+        lowest_speed_heading = Results.bike_states.Data(i, 7)
+        break
+    end
+end
+%-------------------
+
+
 
 subplot(3,2,6)
 hold on

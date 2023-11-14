@@ -1,6 +1,7 @@
 %% clear the possible remnant on previous running
 
 set(0,'defaulttextinterpreter','none');
+addpath('./nov2023_contribution')
 dbclear all;
 clear;
 close all;
@@ -14,7 +15,7 @@ clc;
     % Name of the model
         model = 'Main_bikesim';
     % Simulation time
-        sim_time = 400;
+        sim_time = 100;
 
     % Sampling Time
         Ts = 0.01; 
@@ -22,9 +23,9 @@ clc;
     % Starts at 2 because the one before closest is in the local reference as well
         ref_start_idx = 2;
     % Horizon distance [m]
-        hor_dis = 10;
+        hor_dis = 20;
     % Constant Speed [m/s]
-        v = 2.4;    
+        v = 2;    
 
 % Open the Simulink Model
     open([model '.slx']);
@@ -95,10 +96,10 @@ N = 80;
 scale = 40; 
 addpath('Traj_ref_test')
 
-%[Xref,Yref,Psiref] = ReferenceGenerator(type,ref_dis,N,scale);
+[Xref,Yref,Psiref] = ReferenceGenerator(type,ref_dis,N,scale);
 
 % Use a generated trajectory
-% traj = readtable('Traj_ref_test\trajectorymat_asta0_lat_right.csv');
+% traj = readtable('Traj_ref_test/trajectorymat_asta0_lat_right.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_line.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_infinite.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_infinite_35.csv');
@@ -109,22 +110,22 @@ addpath('Traj_ref_test')
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_turn_left.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_lat_right.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_lat_left.csv');
-traj = readtable('Traj_ref_test/trajectorymat_asta0_circle_3_l.csv');
+% traj = readtable('Traj_ref_test/trajectorymat_asta0_circle_3_l.csv');
 % traj = readtable('trajectorymat.csv');
 
 % traj = readtable('Traj_ref_test\trajectorymat_foot_lat_right.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_parking_line.csv');
-% traj = readtable('Traj_ref_test\trajectorymat_foot_circle_3_r.csv');
+% traj = readtable('Traj_ref_test/trajectorymat_foot_circle_3_r.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_foot_turn_right.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_foot_turn_left.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_foot_lat_right.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_foot_lat_left.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_foot_circle_3_l.csv');
-traj = table2array(traj);
-traj = [traj(:,1)-traj(1,1), traj(:,2)-traj(1,2), traj(:,3)];
-Xref = traj(3:end,1);
-Yref = traj(3:end,2);
-Psiref = traj(3:end,3);
+% traj = table2array(traj);
+% traj = [traj(:,1)-traj(1,1), traj(:,2)-traj(1,2), traj(:,3)];
+% Xref = traj(3:end,1);
+% Yref = traj(3:end,2);
+% Psiref = traj(3:end,3);
 
 test_curve=[Xref,Yref,Psiref];
 Nn = size(test_curve,1); % needed for simulink
