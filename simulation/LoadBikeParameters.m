@@ -147,23 +147,29 @@ function Parameters = LoadBikeParameters(bike)
     elseif strcmp(bike, 'scooter')
 
         % E-scooter --> Parameters on scooter (actual measured)
+
+        [x_com, y_com] = get_com(0,0,0);
         Parameters.inertia_front = 0.0369;
         Parameters.r_wheel = 0.1079;
-        Parameters.h = 0.2352;
-        Parameters.lr = 0.4401;
+
+        % Parameters.h = 0.2352;
+        Parameters.h = y_com;
+        %Parameters.lr = 0.4401;
+        Parameters.lr = x_com;
+        
         Parameters.lf = 0.88 - Parameters.lr;
         Parameters.c = 0.03;
         Parameters.IMU_height = 0.23;
         Parameters.m = 18.2;
         Parameters.lambda = deg2rad(78.7);
         Parameters.uneven_mass = false;
-        Parameters.Xgps = 0.0;            % GPS position X accoarding to the model [m] 
-        Parameters.Ygps = 0.0;            % GPS position Y accoarding to the model [m]
-        Parameters.Hgps = 0.0;              % GPS position height accoarding to the model [m]
-        Parameters.Ximu = 0.0;             % IMU position offset X [m]
-        Parameters.Yimu = 0.0;             % IMU position offset Y [m]
-        Parameters.IMU_x = 0.0;            % x Position of the IMU measured from rear wheel (parallel to bike) [m]
-        Parameters.IMU_roll = 0;           % Orientation offset in roll (degrees)
+        Parameters.Xgps = 0.0;               % GPS position X accoarding to the model [m] 
+        Parameters.Ygps = 0.0;               % GPS position Y accoarding to the model [m]
+        Parameters.Hgps = 0.0;               % GPS position height accoarding to the model [m]
+        Parameters.Ximu = 0.0;               % IMU position offset X [m]
+        Parameters.Yimu = 0.0;               % IMU position offset Y [m]
+        Parameters.IMU_x = 0.0;              % x Position of the IMU measured from rear wheel (parallel to bike) [m]
+        Parameters.IMU_roll = 0;             % Orientation offset in roll (degrees)
         Parameters.IMU_pitch = 0;            % Orientation offset in pitch (degrees)
         Parameters.IMU_yaw = 0;
         Parameters.steer_motor_gear_rat = 100;
@@ -186,15 +192,15 @@ function Parameters = LoadBikeParameters(bike)
         Parameters.m_mod = 18.2;
         Parameters.lambda_mod = deg2rad(78.7);
         Parameters.uneven_mass_mod = false;
-        Parameters.IMU_x_mod = 0.0;            % x Position of the IMU measured from rear wheel (parallel to bike) [m]
-        Parameters.IMU_roll_mod = 0;           % Orientation offset in roll (degrees)
-        Parameters.IMU_pitch_mod = 0;            % Orientation offset in pitch (degrees)
+        Parameters.IMU_x_mod = 0.0;             % x Position of the IMU measured from rear wheel (parallel to bike) [m]
+        Parameters.IMU_roll_mod = 0;            % Orientation offset in roll (degrees)
+        Parameters.IMU_pitch_mod = 0;           % Orientation offset in pitch (degrees)
         Parameters.IMU_yaw_mod = 0;    
-        Parameters.Xgps_mod = 0.0;            % GPS position X accoarding to the model [m] 
-        Parameters.Ygps_mod = 0.0;            % GPS position Y accoarding to the model [m]
+        Parameters.Xgps_mod = 0.0;              % GPS position X accoarding to the model [m] 
+        Parameters.Ygps_mod = 0.0;              % GPS position Y accoarding to the model [m]
         Parameters.Hgps_mod = 0.0;              % GPS position height accoarding to the model [m]
-        Parameters.Ximu_mod = 0.0;             % IMU position offset X [m]
-        Parameters.Yimu_mod = 0.0;             % IMU position offset Y [m]
+        Parameters.Ximu_mod = 0.0;              % IMU position offset X [m]
+        Parameters.Yimu_mod = 0.0;              % IMU position offset Y [m]
 
     elseif strcmp(bike, 'plastic')
 
