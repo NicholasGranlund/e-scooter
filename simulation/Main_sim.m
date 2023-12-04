@@ -15,19 +15,18 @@ clc;
     % Name of the model
         model = 'Main_bikesim';
     % Simulation time
-        sim_time = 100;
-
+        sim_time = 200;
     % Sampling Time
         Ts = 0.01; 
     % First closest point selection in reference 
     % Starts at 2 because the one before closest is in the local reference as well
         ref_start_idx = 2;
     % Horizon distance [m]
-        hor_dis = 20;
+        hor_dis = 10;
     % Constant Speed [m/s]
-        v = 2;    
+        v = 1.10;    
 
-% Open the Simulink Model
+% Open the Simulink Model6
     open([model '.slx']);
 % Choose the solver
     set_param(model,'AlgebraicLoopSolver','TrustRegion');
@@ -87,25 +86,25 @@ end
 %% Reference trajectory generation
 
 % SHAPE options: sharp_turn, line, infinite, circle, ascent_sin, smooth_curve
-type = 'circle';
+type = 'line';
 % Distance between points
-ref_dis = 0.5;
+ref_dis = 1;
 % Number# of reference points
-N = 80; 
+N = 400; 
 % Scale (only for infinite and circle)
 scale = 40; 
 addpath('Traj_ref_test')
 
-[Xref,Yref,Psiref] = ReferenceGenerator(type,ref_dis,N,scale);
+%[Xref,Yref,Psiref] = ReferenceGenerator(type,ref_dis,N,scale);
 
 % Use a generated trajectory
 % traj = readtable('Traj_ref_test/trajectorymat_asta0_lat_right.csv');
-% traj = readtable('Traj_ref_test\trajectorymat_asta0_line.csv');
+% traj = readtable('Traj_ref_test/trajectorymat_asta0_line.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_infinite.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_infinite_35.csv');
-% traj = readtable('Traj_ref_test\trajectorymat_asta0_infinite_30.csv');
+ traj = readtable('Traj_ref_test/trajectorymat_asta0_infinite_30.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_infinite_25.csv');
-% traj = readtable('Traj_ref_test\trajectorymat_asta0_infinite_20.csv');
+% traj = readtable('Traj_ref_test/trajectorymat_asta0_infinite_20.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_turn_right.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_turn_left.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_asta0_lat_right.csv');
@@ -121,11 +120,12 @@ addpath('Traj_ref_test')
 % traj = readtable('Traj_ref_test\trajectorymat_foot_lat_right.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_foot_lat_left.csv');
 % traj = readtable('Traj_ref_test\trajectorymat_foot_circle_3_l.csv');
-% traj = table2array(traj);
-% traj = [traj(:,1)-traj(1,1), traj(:,2)-traj(1,2), traj(:,3)];
-% Xref = traj(3:end,1);
-% Yref = traj(3:end,2);
-% Psiref = traj(3:end,3);
+
+traj = table2array(traj);
+traj = [traj(:,1)-traj(1,1), traj(:,2)-traj(1,2), traj(:,3)];
+Xref = traj(3:end,1);
+Yref = traj(3:end,2);
+Psiref = traj(3:end,3);
 
 test_curve=[Xref,Yref,Psiref];
 Nn = size(test_curve,1); % needed for simulink
@@ -219,14 +219,24 @@ T = Rz*Ry*Rx;
 %% Balancing Controller
 
 % Outer loop -- Roll Tracking
-P_balancing_outer = 3.75;
+P_balancing_outer = 75.75;       % K_p
 I_balancing_outer = 0.0;
 D_balancing_outer = 0.0;
 
 % Inner loop -- Balancing
-P_balancing_inner = 3.5;
+P_balancing_inner = 75.5;       % K_d
 I_balancing_inner = 0;
 D_balancing_inner = 0;  
+
+fprintf('\n% Outer loop -- Roll Tracking\n');
+fprintf('P_balancing_outer = %f\n', P_balancing_outer);
+fprintf('I_balancing_outer = %f\n', I_balancing_outer);
+fprintf('D_balancing_outer = %f\n', D_balancing_outer);
+
+fprintf('\n% Inner loop -- Balancing\n');
+fprintf('P_balancing_inner = %f\n', P_balancing_inner);
+fprintf('I_balancing_inner = %f\n', I_balancing_inner);
+fprintf('D_balancing_inner = %f\n', D_balancing_inner);
 
 %% The LQR controller
 

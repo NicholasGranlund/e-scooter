@@ -11,17 +11,16 @@ view(0,90)
 legend('Ref','True', 'Estimated','Location','northwest');
 xlabel('X-dir [m]');
 ylabel('Y-dir [m]');
-% ylim([traj_plot.ymin traj_plot.ymax])
-% xlim([traj_plot.xmin traj_plot.xmax])
+%ylim([-25 25])
+%xlim([-45 45])
 axis equal
-% xlim([-50 50])
-% ylim([0 150])
 grid on;
 title('Trajectory');
 
 
 subplot(3,2,2)
 plot(Results.error1.Time,Results.error1.Data)
+grid on
 min_lateral_error = 0.5;
 yline(min_lateral_error)
 yline(-min_lateral_error)
@@ -33,7 +32,7 @@ title('Lateral error')
 %--------------------
 for i = 1:length(Results.error1.Data)
     if abs(Results.error1.Data(i)) > min_lateral_error
-        lowest_speed_lateral = Results.bike_states.Data(i, 7)
+        fprintf('lowest_speed_lateral = %f [m/s]\n', Results.bike_states.Data(i, 7));
         break
     end
 end
@@ -54,7 +53,7 @@ title('Heading error')
 %--------------------
 for i = 1:length(Results.error2.Data)
     if abs(Results.error2.Data(i)) > deg2rad(min_heading_error)
-        lowest_speed_heading = Results.bike_states.Data(i, 7)
+        fprintf('lowest_speed_heading = %f [m/s]\n', Results.bike_states.Data(i, 7));
         break
     end
 end
@@ -98,7 +97,7 @@ plot(Results.estimated_states.Time(:,1),Results.estimated_states.Data(:,2));
 legend('Ref Y','True Y','Estimated Y');
 xlabel('Time [t]');
 ylabel('Position Y [m]');
-% ylim([-50 50])
+%ylim([-50 50])
 % xlim([-100 100])
 grid on;
 title('Y-coordinate');
@@ -147,12 +146,16 @@ subplot(3,2,6)
 hold on;
 plot(Results.bike_states.Time(:,1),rad2deg(Results.bike_states.Data(:,6)));
 plot(Results.estimated_states.Time(:,1),rad2deg(Results.estimated_states.Data(:,6)));
+yline(-57.3)
+yline(48.7)
 xlabel('Time [t]')
 ylabel('Angle [Deg]')
 yyaxis right
 plot(Results.ref_states.Time(:,1),rad2deg(Results.ref_states.Data(:,5)))
 ylabel('Rate [Deg/s]')
 legend('True Steer angle','Estimated Steer angle', 'Steer rate')
+yline(168)
+yline(-168)
 % ylim([-3 3])
 % xlim([0 0])
 grid on

@@ -147,8 +147,9 @@ function Parameters = LoadBikeParameters(bike)
     elseif strcmp(bike, 'scooter')
 
         % E-scooter --> Parameters on scooter (actual measured)
-
         [x_com, y_com] = get_com(0,0,0);
+        fprintf('Center of mass: [x_com = %f, y_com = %f]\n', x_com, y_com);
+
         Parameters.inertia_front = 0.0369;
         Parameters.r_wheel = 0.1079;
 
